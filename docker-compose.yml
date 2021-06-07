@@ -1,0 +1,12 @@
+version: '3'
+
+volumes:
+  mongo_volume:
+    driver: local
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo_example
+    ports:
+      - '27017:27017'
