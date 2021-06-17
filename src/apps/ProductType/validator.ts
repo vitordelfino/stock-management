@@ -12,10 +12,10 @@ export const validateCreate = async (
       .object()
       .shape({
         name: yup.string().required(),
-        document: yup.string().length(11).required(),
-        password: yup.string().required(),
+        description: yup.string(),
       })
       .validateSync(req.body, { abortEarly: false });
+
     return next();
   } catch (e) {
     return next(e);

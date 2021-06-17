@@ -25,5 +25,5 @@ export const dbConnections = {
 
 export const auth = {
   secret: String(process.env.TOKEN_SECRET),
-  expires: '1h',
+  expires: '24h',
 };

@@ -4,14 +4,16 @@ import {
   CurrentUser,
   Get,
   JsonController,
+  Param,
   Post,
   UseBefore,
 } from 'routing-controllers';
 import { Inject, Service } from 'typedi';
 
+import { IUserRequest } from '@config/globals';
+
 import { Ip } from '@utils/interceptors/ip';
 
-import { IUserRequest } from './../../config/globals';
 import { User } from './user.entity';
 import { UserService } from './UserService';
 import { validateCreate } from './validator';
@@ -44,6 +46,12 @@ export class UserController {
   @UseBefore(validateCreate)
   async createAdmin(@Body() user: User, @Ip() ip: string) {
     const response = await this.service.createAdmin(user, ip);
+    return response;
+  }
+
+  @Get('/:id')
+  async findOne(@Param('id') id: string) {
+    const response = await this.service.findOne(id);
     return response;
   }
 }

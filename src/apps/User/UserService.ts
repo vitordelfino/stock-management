@@ -66,14 +66,13 @@ export class UserService {
       logger.info(`UserService::createAdmin::logging operation`, log);
       await this.logdb.save(log);
       return response;
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === 11000)
         throw new CustomError({
           code: 'USER_ALREADY_EXISTS',
           message: 'Usuário ja existente',
           status: 409,
         });
-      console.log('@@@@@@', e);
       throw new CustomError({
         code: 'ERROR_CREATE_USER',
         message: 'Houve algum erro ao cadastrar novo usuário' + e.message,

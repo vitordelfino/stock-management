@@ -13,7 +13,7 @@ export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
   error(error: any, _: Request, response: Response, next: NextFunction) {
     console.log('error', error);
     if (error instanceof CustomError)
-      response.status(error.error.status).json(error.getErrorResponse());
+      response.status(error.error.status).json(error.error);
     else if (error instanceof ValidationError) {
       response.status(422).json({
         code: 'VALIDATION_ERROR',

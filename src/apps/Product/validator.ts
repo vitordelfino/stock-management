@@ -11,11 +11,15 @@ export const validateCreate = async (
     await yup
       .object()
       .shape({
+        productTypeId: yup.string().required(),
         name: yup.string().required(),
-        document: yup.string().length(11).required(),
-        password: yup.string().required(),
+        description: yup.string(),
+        image: yup.string(),
+        purchasePrice: yup.number().min(0.01).required(),
+        salePrice: yup.number().min(0.05).required(),
       })
       .validateSync(req.body, { abortEarly: false });
+
     return next();
   } catch (e) {
     return next(e);

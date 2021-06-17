@@ -45,7 +45,7 @@ export class AuthService {
         user,
         token,
       };
-    } catch (e) {
+    } catch (e: any) {
       logger.error(`AuthService::auth::error::${e.message}`);
       if (e instanceof CustomError) throw e;
       throw new CustomError({
