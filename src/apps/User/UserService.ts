@@ -1,23 +1,25 @@
 import { ObjectId } from 'bson';
 import { CustomError } from 'express-handler-errors';
 import { Service } from 'typedi';
-import { MongoRepository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { dbConnections } from '@config/globals';
+
+import { LogDbRepository } from '@apps/Logs/LogDbRepository';
 
 import logger from '@middlewares/logger';
 
 import { LogDb, LogDBOperation } from './../Logs/LogDb.entity';
 import { Profile, User } from './user.entity';
+import { UserRepository } from './UserRepository';
 
 @Service()
 export class UserService {
-  @InjectRepository(User, dbConnections.mongo.name)
-  private repository!: MongoRepository<User>;
+  @InjectRepository(dbConnections.mongo.name)
+  private repository!: UserRepository;
 
-  @InjectRepository(LogDb, dbConnections.mongo.name)
-  private logdb!: MongoRepository<LogDb>;
+  @InjectRepository(dbConnections.mongo.name)
+  private logdb!: LogDbRepository;
 
   async create(user: User): Promise<User> {
     const response = await this.repository.save(user);

@@ -38,7 +38,7 @@ export class ProductService {
         description: 'Inserção de novo produto',
         snapshot: response,
       } as LogDb;
-      logger.info(`ProductService::createAdmin::logging operation`, log);
+      logger.info(`ProductService::create::logging operation`, log);
       await this.logdb.save(log);
       return response;
     } catch (e: any) {
@@ -64,5 +64,45 @@ export class ProductService {
   async findByType(productTypeId: string): Promise<Product[]> {
     const response = await this.repository.find({ productTypeId });
     return response;
+  }
+
+  async update(
+    id: string,
+    product: Product,
+    ip: string,
+    user: IUserRequest
+  ): Promise<Product> {
+    try {
+      const p = await this.findOne(id);
+      await this.repository.updateOne(
+        {
+          _id: p._id,
+        },
+        { $set: { ...product } }
+      );
+      const log = {
+        ip,
+        contextId: String(p._id),
+        contextName: 'product',
+        operation: LogDBOperation.CREATE,
+        user: String(user._id),
+        description: 'Update de produto',
+        snapshot: p,
+      } as LogDb;
+      logger.info(`ProductService::update::logging operation`, log);
+      await this.logdb.save(log);
+      return {
+        ...p,
+        ...product,
+      } as Product;
+    } catch (e: any) {
+      if (e instanceof CustomError) throw e;
+      logger.error(`ProductService::update::error - ${e.message}`, e);
+      throw new CustomError({
+        code: 'ERROR_UPDATE_PRODUCT',
+        message: 'Erro ao atualizar o produto',
+        status: 500,
+      });
+    }
   }
 }

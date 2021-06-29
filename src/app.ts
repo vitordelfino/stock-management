@@ -32,8 +32,14 @@ class App {
       routePrefix: '/api',
       classTransformer: false,
       defaultErrorHandler: false,
-      controllers: [resolve(__dirname, './apps/**/*.controller.ts')],
-      middlewares: [resolve(__dirname, './middlewares/api/*.ts')],
+      controllers: [
+        resolve(__dirname, './apps/**/*.controller.ts'),
+        resolve(__dirname, './apps/**/*.controller.js'),
+      ],
+      middlewares: [
+        resolve(__dirname, './middlewares/api/*.ts'),
+        resolve(__dirname, './middlewares/api/*.js'),
+      ],
       authorizationChecker: (action: Action) => {
         const token = action.request.headers.authorization;
         if (!token)
